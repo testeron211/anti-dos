@@ -10,7 +10,7 @@ hook.Add("PlayerConnect", "antidos", function ( name, ip )
 		return
 	end 
 	
-	if ( CurTime() < (connects[ip].last + 5) and connects[ip].count > 5) then
+	if ( CurTime() < (connects[ip].last + 3) and connects[ip].count > 5) then
 		RunConsoleCommand("addip", "1", ip)		
 		print("[ANTI-DOS]: IP " .. ip .. " banned on 1 minute")
 		for i,ply in ipairs(player.GetAll()) do
@@ -24,4 +24,8 @@ hook.Add("PlayerConnect", "antidos", function ( name, ip )
 
 	connects[ip].last = CurTime()
 	connects[ip].count =  connects[ip].count + 1
+
+	timer.Simple(60, function () connects[ip] = nil end)
 end)
+
+print("[dos-filter]", "loaded!")
